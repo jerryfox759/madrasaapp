@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex items-center justify-center min-h-screen p-6">
+        <div class="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+            <div class="p-6">
+                <div class="flex flex-col items-center justify-center mb-6">
+                    <img src="/images/logo.png" alt="Logo" class="w-24 h-24 mb-4 object-contain">
+                    <h1 class="text-2xl font-bold text-center text-gray-700 dark:text-gray-200">
+                        Al-IQRA MODERN MADRASA
+                    </h1>
+                </div>
+
+                <% if (locals.error) { %>
+                    <div class="p-2 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                        role="alert">
+                        <span class="font-medium">Error!</span>
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <form action="/auth/login" method="POST">
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Username</span>
+                                <input name="username"
+                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-green-400 focus:outline-none focus:shadow-outline-green dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-md border-gray-300 p-2 border"
+                                    placeholder="admin" required />
+                            </label>
+
+                            <label class="block mt-4 text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Password</span>
+                                <input name="password" type="password"
+                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-green-400 focus:outline-none focus:shadow-outline-green dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-md border-gray-300 p-2 border"
+                                    placeholder="***************" required />
+                            </label>
+
+                            <button
+                                class="block w-full px-4 py-2 mt-6 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green">
+                                Log in
+                            </button>
+                        </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

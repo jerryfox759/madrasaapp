@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <%- include('../partials/sidebar') %>
+            <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                <%- include('../partials/header') %>
+                    <main class="w-full flex-grow p-6">
+                        <!-- Dashboard Cards -->
+                        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                            Dashboard Overview
+                        </h2>
+
+                        <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
+                            <!-- Card 1 -->
+                            <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                                <div
+                                    class="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Total Students
+                                    </p>
+                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                        <%= studentCount %>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                                <div
+                                    class="p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Total Teachers
+                                    </p>
+                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                        <%= teacherCount %>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                                <div
+                                    class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Hifz Completed
+                                    </p>
+                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                        <%= hifzCount %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Salary -->
+                        <!-- Recent Salary -->
+                        <% if (user.role==='admin' ) { %>
+                            <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                                Recent Salary Payments
+                            </h2>
+                            <div class="w-full overflow-hidden rounded-lg shadow-xs">
+                                <div class="w-full overflow-x-auto">
+                                    <table class="w-full whitespace-no-wrap">
+                                        <thead>
+                                            <tr
+                                                class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                                <th class="px-4 py-3">Teacher</th>
+                                                <th class="px-4 py-3">Month</th>
+                                                <th class="px-4 py-3">Amount</th>
+                                                <th class="px-4 py-3">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                            <% recentSalaries.forEach(salary=> { %>
+                                                <tr class="text-gray-700 dark:text-gray-400">
+                                                    <td class="px-4 py-3">
+                                                        <div class="flex items-center text-sm">
+                                                            <p class="font-semibold">
+                                                                <%= salary.teacher ? salary.teacher.name : 'Unknown' %>
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-4 py-3 text-sm">
+                                                        <%= salary.month %>
+                                                    </td>
+                                                    <td class="px-4 py-3 text-sm">
+                                                        ₹<%= salary.amount %>
+                                                    </td>
+                                                    <td class="px-4 py-3 text-sm">
+                                                        <%= salary.datePaid.toDateString() %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <!-- Quick Actions -->
+                                <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                                    Quick Actions
+                                </h2>
+                                <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-2">
+                                    <a href="/students"
+                                        class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
+                                        <div class="flex items-center">
+                                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                </path>
+                                            </svg>
+                                            <span>Manage Students</span>
+                                        </div>
+                                        <span>View &rarr;</span>
+                                    </a>
+                                    <a href="/teachers"
+                                        class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-green-100 bg-green-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-green">
+                                        <div class="flex items-center">
+                                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                </path>
+                                            </svg>
+                                            <span>Add Teacher</span>
+                                        </div>
+                                        <span>View &rarr;</span>
+                                    </a>
+                                </div>
+
+                    </main>
+            </div>
+    </div>
+</body>
+
+</html>
