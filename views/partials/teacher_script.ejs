@@ -1,0 +1,15 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('toggleTeacherForm');
+        const form = document.getElementById('addTeacherForm');
+
+        if (toggleBtn && form) {
+            toggleBtn.addEventListener('click', () => {
+                form.classList.toggle('hidden');
+                console.log('Toggle clicked, form hidden:', form.classList.contains('hidden'));
+            });
+        } else {
+            console.error('Toggle elements not found');
+        }
+    });
+</script>

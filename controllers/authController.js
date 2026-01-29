@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 // Generate Token
 const generateToken = (id) => {
@@ -47,6 +49,17 @@ exports.loginUser = async (req, res) => {
 // @route   GET /auth/logout
 // @access  Private
 exports.logoutUser = (req, res) => {
+    try {
+        // Delete uploaded files
+        const uploadsDir = path.join(__dirname, '../public/uploads');
+        if (fs.existsSync(uploadsDir)) {
+            fs.rmSync(uploadsDir, { recursive: true, force: true });
+            console.log('Uploads directory cleaned up');
+        }
+    } catch (err) {
+        console.error('Error deleting uploads:', err);
+    }
+
     res.cookie('token', '', {
         httpOnly: true,
         expires: new Date(0),
