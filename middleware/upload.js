@@ -2,44 +2,35 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '../public/uploads/students');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Set storage engine
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        // Generate unique filename: fieldname-timestamp-random.ext
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Check file type
-function checkFileType(file, cb) {
-    const filetypes = /jpeg|jpg|png|gif/;
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
+// Set up Cloudinary storage
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'madrasa_students', // Folder name in Cloudinary
+        allowed_formats: ['jpg', 'jpeg', 'png', 'gif'], // Allowed formats
+        // public_id: (req, file) => 'computed-filename-using-request', // Optional custom filename
+    },
+});
 
-    if (mimetype && extname) {
-        return cb(null, true);
-    } else {
-        cb('Error: Images Only!');
-    }
-}
+// Cloudinary handles file types via allowed_formats, but we can keep the filter if needed.
+// However, allowed_formats in params is usually sufficient for extension checking.
+// The existing checkFileType function verified mimetype and extname manually.
+// With CloudinaryStorage, simple format validation is built-in.
 
 // Init upload
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1000000 }, // 1MB limit
-    fileFilter: function (req, file, cb) {
-        checkFileType(file, cb);
-    }
+    limits: { fileSize: 5000000 }, // Increased limit to 5MB for cloud storage if needed, or keep 1MB
 });
 
 module.exports = upload;
